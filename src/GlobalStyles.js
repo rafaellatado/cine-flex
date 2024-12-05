@@ -10,13 +10,17 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: "Sarala", sans-serif;
-    font-weight: 400;
+    word-spacing: 2px;
     font-size: 14px;
     line-height: 1.4;
     color: #000000;
-    background-color: #FAF5F0;
+    background-color: #FFFFFF;
     width: 100%;
     height: 100%;
+  }
+
+  h1, h2, p {
+    color: white;
   }
 `;
 
