@@ -13,7 +13,7 @@ function App() {
       <GlobalStyles />
       <OuterContainer>
         <LogoTitle>
-          <img src="public/logo.png" alt="Logo" />
+          <img src="/logo.png" alt="Logo" />
           <h1>Cineflex</h1>
         </LogoTitle>
         <Routes>
@@ -43,8 +43,6 @@ const LogoTitle = styled.div`
   gap: 15px;
   background-color: #EE897F;
   height: 70px;
-/*   position: sticky;
-  top: 0; */
 
   h1{
     color: #FADBC5;
