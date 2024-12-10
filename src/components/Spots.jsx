@@ -64,17 +64,10 @@ const Spots = () => {
           <li key={spot.id}>
             <SpotButton 
               onClick={spot.isAvailable ? () => toggleSpot(spot.name, spot.id) : () => alert('Desculpe. Esse assento não está disponível.')}
-              style={{ 
-                backgroundColor: spotsClicked.includes(spot.name) 
-                  ? '#FADBC5'
-                  : spot.isAvailable 
-                  ? '#9DB899' 
-                  : '#2B2D36',
-                cursor: spot.isAvailable ? 'pointer' : 'default',
-                border: spotsClicked.includes(spot.name)
-                  ? 'solid 2px #EE897F'
-                  : 'solid 2px transparent'
-              }}
+
+              $spotsClicked={spotsClicked}
+              $spotName={spot.name}
+              $spotAvailable={spot.isAvailable}
             >
               {/* {spot.isAvailable ? 'Available' : 'Unavailable'} */}
               {index + 1}
@@ -144,7 +137,10 @@ const Loading = styled.div`
 
 const OuterContainer = styled.div`
   background-color: #1F2028;
+  /* height: calc(100vh - 70px); */
+  height: 100%;
   padding: 0 20px;
+  margin-bottom: 25px;
 
   h1{
     text-align: center;
@@ -179,6 +175,19 @@ const SpotButton = styled.button`
   justify-content: center;
   align-items: center;
   color: #2B2D36;
+  cursor: ${props => props.$spotAvailable ? 'pointer' : 'default'};
+  background-color: ${props => 
+    props.$spotsClicked.includes(props.$spotName)
+    ? '#FADBC5'
+    : props.$spotAvailable
+    ? '#9DB899' 
+    : '#2B2D36'
+  };
+  border: ${props => 
+    props.$spotsClicked.includes(props.$spotName)
+    ? 'solid 2px #EE897F'
+    : 'solid 2px transparent'
+  };
 `
 
 const StyledForm = styled.form`
@@ -214,7 +223,7 @@ const StyledLastButton = styled.button`
   height: 42px;
   border-radius: 8px;
   width: 100%;
-  /* margin: 0 20px 25px 20px; */
+  /* margin-bottom: 25px; */
   display: flex;
   justify-content: center;
   align-items: center;

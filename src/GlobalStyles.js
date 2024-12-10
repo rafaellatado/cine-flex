@@ -14,7 +14,8 @@ const GlobalStyles = createGlobalStyle`
     font-size: 14px;
     line-height: 1.4;
     color: #000000;
-    background-color: #FFFFFF;
+    background-color: #1F2028;
+    /* background-color: #FFFFFF; */
     width: 100%;
     height: 100%;
   }
