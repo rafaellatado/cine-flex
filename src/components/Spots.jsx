@@ -156,7 +156,7 @@ const StyledUl = styled.ul`
   display: grid;
   grid-template-columns: repeat(10, 1fr); 
   justify-items: center;
-  gap: 10px;
+  gap: 5px;
   border-bottom: 1px solid #4E5A65;
   margin-bottom: 30px;
   padding-bottom: 30px;
@@ -168,8 +168,9 @@ const StyledUl = styled.ul`
 
 const SpotButton = styled.button`
   all: unset;
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
+  /* font-size: 12px; */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -188,6 +189,11 @@ const SpotButton = styled.button`
     ? 'solid 2px #EE897F'
     : 'solid 2px transparent'
   };
+
+/*   @media (max-width: 374px) {
+    width: 20px;
+    height: 20px;
+  } */
 `
 
 const StyledForm = styled.form`
