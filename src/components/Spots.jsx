@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Spots = () => {
 
+  const navigate = useNavigate();
   const { sessionId } = useParams();
   const [spots, setSpots] = useState(null);
   const [spotsClicked, setSpotsClicked] = useState([]);
+  const [spotsClickedId, setSpotsClickedId] = useState([]);
   const [username, setUsername] = useState('');
   const [cpf, setCpf] = useState('');
 
@@ -22,12 +24,32 @@ const Spots = () => {
     .catch(err => console.log(err.res.data));
   }, [sessionId])
 
-  const toggleSpot = (name) => {
+  const toggleSpot = (name, id) => {
     setSpotsClicked( 
       spotsClicked.includes(name) 
         ? spotsClicked.filter((spotName) => spotName !== name) 
         : [...spotsClicked, name] 
     );
+    setSpotsClickedId( 
+      spotsClickedId.includes(id) 
+        ? spotsClickedId.filter((spotId) => spotId !== id) 
+        : [...spotsClickedId, id] 
+    );
+  };
+
+  const handleReservation = () => {
+    axios
+      .post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', {
+        ids: spotsClickedId, 
+        name: username, 
+        cpf: cpf 
+      })
+      .then((response) => {
+        console.log("Reserva bem-sucedida:", response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao fazer a reserva:", error);
+      });
   };
 
   if (spots === null) {
@@ -40,16 +62,15 @@ const Spots = () => {
       <StyledUl>
         {spots.seats.map((spot, index) => (
           <li key={spot.id}>
-            <button 
-              onClick={spot.isAvailable ? () => toggleSpot(spot.name) : null}
-              disabled={!spot.isAvailable} 
+            <SpotButton 
+              onClick={spot.isAvailable ? () => toggleSpot(spot.name, spot.id) : () => alert('Desculpe. Esse assento não está disponível.')}
               style={{ 
                 backgroundColor: spotsClicked.includes(spot.name) 
                   ? '#FADBC5'
                   : spot.isAvailable 
                   ? '#9DB899' 
                   : '#2B2D36',
-                cursor: spot.isAvailable ? 'pointer' : 'not-allowed',
+                cursor: spot.isAvailable ? 'pointer' : 'default',
                 border: spotsClicked.includes(spot.name)
                   ? 'solid 2px #EE897F'
                   : 'solid 2px transparent'
@@ -57,7 +78,7 @@ const Spots = () => {
             >
               {/* {spot.isAvailable ? 'Available' : 'Unavailable'} */}
               {index + 1}
-            </button>
+            </SpotButton>
           </li>
         ))}
       </StyledUl>
@@ -79,23 +100,31 @@ const Spots = () => {
         />
       </StyledForm>
 
-      <StyledLink 
-        to={`/finale`}
-        state={{ 
-          title: spots.movie.title, 
-          date: spots.day.date,
-          hour: spots.name,
-          seats: [...spotsClicked].sort((a, b) => a - b),
-          username: username,
-          cpf: cpf
+      <StyledLastButton 
+        onClick={() => {
+          if (spotsClicked.length === 0) {
+            alert('Por favor, selecione pelo menos um assento.');
+          } else if (username === '') {
+            alert('Por favor, insira o nome do comprador.');
+          } else if (cpf === '') {
+            alert('Por favor, insira o CPF do comprador.');
+          } else {
+            handleReservation(spotsClicked, username, cpf);
+            navigate('/finale', {
+              state: { 
+                title: spots.movie.title, 
+                date: spots.day.date,
+                hour: spots.name,
+                seats: [...spotsClicked].sort((a, b) => a - b),
+                username: username,
+                cpf: cpf
+              }
+            });
+          }
         }}
       >
-        <StyledLastButton 
-          disabled={spotsClicked.length === 0 || username === '' || cpf === ''}
-        >
-          Reservar assento(s)
-        </StyledLastButton>
-      </StyledLink>
+        Reservar assento(s)
+      </StyledLastButton>
     </OuterContainer>
   )
 }
@@ -115,6 +144,7 @@ const Loading = styled.div`
 
 const OuterContainer = styled.div`
   background-color: #1F2028;
+  padding: 0 20px;
 
   h1{
     text-align: center;
@@ -126,7 +156,7 @@ const OuterContainer = styled.div`
 
 const StyledUl = styled.ul`
   box-sizing: border-box;
-  margin: 25px 20px;
+  margin: 25px 0;
   display: grid;
   grid-template-columns: repeat(10, 1fr); 
   justify-items: center;
@@ -137,25 +167,25 @@ const StyledUl = styled.ul`
 
   li {
     all: unset;
-
-    button {
-      all: unset;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #2B2D36;
-    }
   }
+`
+
+const SpotButton = styled.button`
+  all: unset;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2B2D36;
 `
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin: 0 20px 30px 20px;
+  margin-bottom: 30px;
 
   label {
     color: white;
@@ -175,21 +205,16 @@ const StyledForm = styled.form`
   }
 `
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-`
-
 const StyledLastButton = styled.button`
   all: unset;
+  display: flex;
   background-color: #EE897F;
   color: #2B2D36;
   font-size: 18px;
   height: 42px;
   border-radius: 8px;
   width: 100%;
-  margin: 0 20px 25px 20px;
+  /* margin: 0 20px 25px 20px; */
   display: flex;
   justify-content: center;
   align-items: center;

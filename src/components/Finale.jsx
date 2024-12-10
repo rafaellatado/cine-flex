@@ -6,7 +6,7 @@ const Finale = () => {
 
   const { state } = useLocation(); 
   const { title, date, hour, seats, username, cpf } = state || {}; 
-  console.log(seats);
+  console.log(state);
 
   const navigate = useNavigate()
 
