@@ -91,7 +91,7 @@ const StyledDatesLi = styled.li`
   }
 
   p {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   p:first-of-type::after {
