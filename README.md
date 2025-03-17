@@ -5,7 +5,7 @@
 ### Description
 Cine Flex is a web application designed for users to purchase tickets for movies, choose their preferred seats, and plan their movie-going experience. The app provides an easy and intuitive way for users to browse available movies, select showtimes, view theater locations, and buy tickets for their desired films. Users can also select specific seats in the theater for a more personalized experience.
 
-### The app leverages React for the frontend and integrates with a movie API to display movie details, showtimes, and availability.
+The app leverages React for the frontend and integrates with a movie API to display movie details, showtimes, and availability.
 
 ### Technologies Used
 - React: The front-end framework used to build the user interface in a component-based structure.
