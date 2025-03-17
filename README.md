@@ -1,6 +1,6 @@
-# https://cine-flex-tau.vercel.app/
-
 # Cine Flex
+
+You can view the Cine Flex App live at <a href="https://cine-flex-tau.vercel.app/" target="_blank">https://cine-flex-tau.vercel.app/</a>.
 
 ### Description
 Cine Flex is a web application designed for users to purchase tickets for movies, choose their preferred seats, and plan their movie-going experience. The app provides an easy and intuitive way for users to browse available movies, select showtimes, view theater locations, and buy tickets for their desired films. Users can also select specific seats in the theater for a more personalized experience.
